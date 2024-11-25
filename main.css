@@ -30,6 +30,7 @@ table#game-field td {
     text-align: center;
     font-size: x-large;
     border-radius: 5px;
+    color: transparent;
 }
 
 table#game-field td:hover {
@@ -115,33 +116,33 @@ td[data-value] {
 }
 
 td[data-value="1"] {
-    color: #00c643;
+    color: #00c643 !important;
 }
 
 td[data-value="2"] {
-    color: #1ffd6a;
+    color: #1ffd6a !important;
 }
 
 td[data-value="3"] {
-    color: #d0f364;
+    color: #d0f364 !important;
 }
 
 td[data-value="4"] {
-    color: #ffff00;
+    color: #ffff00 !important;
 }
 
 td[data-value="5"] {
-    color: #ffcd47;
+    color: #ffcd47 !important;
 }
 
 td[data-value="6"] {
-    color: #ff9e00;
+    color: #ff9e00 !important;
 }
 
 td[data-value="7"] {
-    color: #e57c36;
+    color: #e57c36 !important;
 }
 
 td[data-value="8"] {
-    color: #e82900;
+    color: #e82900 !important;
 }

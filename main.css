@@ -1,0 +1,93 @@
+body {
+    margin: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+body * {
+    font-family: 'Tiny5';
+}
+
+table#game-field {
+    border-collapse: separate;
+    margin-bottom: 100px;
+    margin: auto;
+}
+
+table#game-field.end {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+table#game-field td {
+    background-color: beige;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: .15s;
+    text-align: center;
+}
+
+table#game-field td:hover {
+    background-color: #ffffc8;
+}
+
+table#game-field td.opened {
+    background-color: #c4c4b4;
+}
+
+form#settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    margin: auto;
+}
+
+.form-group input {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.form-group-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#counters--wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.counter {
+    font-weight: 600;
+}
+
+.game-info {
+    margin: unset;
+    text-align: center;
+    font-weight: 100;
+}
+
+td.mine {
+    background-position: center;
+    background-size: cover;
+    background-image: url('./assets/mine.svg');
+    background-color: #C77777;
+}
+
+td.flag {
+    background-position: center;
+    background-size: cover;
+    background-image: url('./assets/flag.svg');
+    background-color: #48488C;
+}

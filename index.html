@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINESWEEPER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Tiny5&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <h1> ! MINESWEEPER ! </h1>
+    </header>
+    <main>
+        <form id="settings">
+            <div class="form-group">
+                <label> Ширина </label>
+                <input type="number" name="width" value="3" min="1">
+            </div>
+            <div class="form-group">
+                <label> Высота </label>
+                <input type="number" name="height" value="3" min="1">
+            </div>
+            <div class="form-group">
+                <label> Количество мин </label>
+                <input type="number" name="mines" value="1" min="1">
+            </div>
+            <div class="form-group-buttons">
+                <button type="reset" id="randomize"> Случайно! </button>
+                <button type="submit" id="confirm"> Применить </button>
+            </div>
+        </form>
+        <hr>
+        <div id="counters--wrapper">
+            <h3 class="game-info"> Клетки: <span class="counter" id="closed-cells-left"> 0 </span> </h3>
+            <h3 class="game-info"> <span class="counter" id="stopwatch">00 мин. 00 сек. </span> </h3>
+            <h3 class="game-info"> Мины: <span class="counter" id="unsigned-mines-left"> 0 </span> </h3>
+        </div>
+        <hr>
+        <table id="game-field">
+            
+        </table>
+    </main>
+</body>
+<script type="module" src="main.mjs"></script>
+</html>

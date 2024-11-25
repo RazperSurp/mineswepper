@@ -22,20 +22,22 @@ table#game-field.end {
 }
 
 table#game-field td {
-    background-color: beige;
+    background-color: #c3a188;
     width: 30px;
     height: 30px;
     cursor: pointer;
     transition: .15s;
     text-align: center;
+    font-size: x-large;
+    border-radius: 5px;
 }
 
 table#game-field td:hover {
-    background-color: #ffffc8;
+    background-color: #edb3a1;
 }
 
 table#game-field td.opened {
-    background-color: #c4c4b4;
+    background-color: #ffe9d1;
 }
 
 form#settings {
@@ -106,4 +108,40 @@ td.flag.mine {
 
 #game-status.lose {
     color: #F00000
+}
+
+td[data-value] {
+    text-shadow: 0 0 2px black;
+}
+
+td[data-value="1"] {
+    color: #00c643;
+}
+
+td[data-value="2"] {
+    color: #1ffd6a;
+}
+
+td[data-value="3"] {
+    color: #d0f364;
+}
+
+td[data-value="4"] {
+    color: #ffff00;
+}
+
+td[data-value="5"] {
+    color: #ffcd47;
+}
+
+td[data-value="6"] {
+    color: #ff9e00;
+}
+
+td[data-value="7"] {
+    color: #e57c36;
+}
+
+td[data-value="8"] {
+    color: #e82900;
 }

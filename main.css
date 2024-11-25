@@ -19,6 +19,7 @@ table#game-field {
     width: fit-content;
     overflow: auto;
     border-radius: 5px;
+    padding: 5px;
 }
 
 table#game-field.end {
@@ -111,6 +112,24 @@ table#game-field.lose {
     }
 }
 
+@keyframes blow {
+    0% {
+        scale: 1;
+    } 25% {
+        scale: 1.5;
+        transform: rotate(90deg);
+    } 50% {
+        scale: 2;
+        transform: rotate(180deg);
+    } 75% {
+        scale: 1.5;
+        transform: rotate(270deg);
+    } 100% {
+        scale: 1;
+        transform: rotate(360deg);
+    }
+}
+
 table#game-field.end {
     cursor: not-allowed;
     pointer-events: none;
@@ -190,6 +209,10 @@ td.mine {
     background-image: url('./assets/mine.svg');
     background-color: #ef585875 !important;
     box-shadow: 0 0 1px 1px #ef5858;
+}
+
+td.mine.faggot {
+    animation: blow .4s linear/*cubic-bezier(0.43, 0.08, 0.4, 0.99);*/
 }
 
 td.flag {

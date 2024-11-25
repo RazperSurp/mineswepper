@@ -41,10 +41,6 @@ export default class Game {
         this.updateGameInfo();
 
         this.triggerStopwatch();
-
-        if (this._SHOW_MINES) setTimeout(() => {
-            this.markCell({ POS: {X: 0, Y: 0}, EL: this.findCell(0,0) });
-        }, 100);
     }
 
     triggerStopwatch(doStop = false) {
@@ -63,6 +59,12 @@ export default class Game {
 
     _stopStopwatch() {
         clearInterval(this._EPOCH_INTERVAL);
+    }
+
+    _showMines(doWin = false) {
+        if (doWin) this.GAME_FIELD.querySelectorAll('td').forEach(cell => {
+            if (!this._MINES_POS.find(pos => pos.x !== cell.dataset.addr && pos.y !== cell.parentNode.dataset.addr)) this.openCell(cell);
+        }); else this._MINES_POS.forEach(pos => { this.findCell(pos.x, pos.y).classList.add('mine') })
     }
 
     _parseStopwatch() {        
@@ -184,11 +186,6 @@ export default class Game {
 
             this.updateGameInfo();
         }
-
-        if (this._SHOW_MINES) {
-            this._SHOW_MINES = false;
-            this._MINES_POS.forEach(pos => { this.findCell(pos.x, pos.y).classList.add('mine') })
-        }
     }
 
     openCell(cell) {
@@ -209,6 +206,8 @@ export default class Game {
 
                 if (IS_MINE) {
                     CELL_DATA.EL.classList.add('mine');
+                    CELL_DATA.EL.classList.add('faggot'); // =)
+
                     this.endGame();
                 } else {
                     this._CLOSED_CELLS_LEFT--;
@@ -290,8 +289,13 @@ export default class Game {
         delete this;
 
         if (!isRestart) {
+            let delay = 0;
             this._MINES_POS.forEach(pos => {
-                this.findCell(pos.x, pos.y).classList.add('mine');
+                let mineCell = this.findCell(pos.x, pos.y);
+                mineCell.classList.add('mine');
+                setTimeout(() => { mineCell.classList.add('faggot') }, 30 * delay);
+
+                delay++;
             })
 
             this.GAME_STATUS_CONTAINER.classList.add(isWin ? 'win' : 'lose');

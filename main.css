@@ -14,6 +14,60 @@ table#game-field {
     border-collapse: separate;
     margin-bottom: 100px;
     margin: auto;
+    position: relative;
+    transition: .15s;
+}
+
+table#game-field.end {
+    animation: shake .25s linear;
+}
+
+#game-status {
+    text-shadow: 0 0 #ff0000;
+}
+
+#game-status.lose {
+    animation: glowLose .65s linear;
+}
+
+#game-status.win {
+    animation: glowWin .65s linear;
+}
+
+@keyframes glowWin {
+    0% {
+        text-shadow: 0 0 #225222;
+    } 50% {
+        text-shadow: 0 0 2px #225222;
+    } 100% {
+        text-shadow: 0 0 #225222;
+    }
+}
+
+@keyframes glowLose {
+    0% {
+        text-shadow: 0 0 #ff0000;
+    } 50% {
+        text-shadow: 0 0 5px #ff0000;
+    } 100% {
+        text-shadow: 0 0 #ff0000;
+    }
+}
+
+@keyframes shake {
+    0% {
+        left: 0px;
+    } 20% {
+        left: -5px;
+    } 40% {
+        left: 5px;
+    } 60% {
+        left: -5px;
+    } 80% {
+        left: 5px;
+    } 100% {
+        left: 0px;
+    }
 }
 
 table#game-field.end {
@@ -23,22 +77,28 @@ table#game-field.end {
 
 table#game-field td {
     background-color: #c3a188;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     transition: .15s;
     text-align: center;
     font-size: x-large;
     border-radius: 5px;
     color: transparent;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
-table#game-field td:hover {
+table#game-field td:hover,
+table#game-field td.hover {
     background-color: #edb3a1;
 }
 
 table#game-field td.opened {
-    background-color: #ffe9d1;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 0 1px 1px #c3a18a42;
 }
 
 form#settings {
@@ -85,7 +145,8 @@ td.mine {
     background-position: center;
     background-size: cover;
     background-image: url('./assets/mine.svg');
-    background-color: #C77777;
+    background-color: #ef585875 !important;
+    box-shadow: 0 0 1px 1px #ef5858;
 }
 
 td.flag {

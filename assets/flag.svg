@@ -1,4 +1,4 @@
-<svg width="11" height="10" style="padding: 3px" viewBox="0 -1 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8 1H1V4.5H8V1Z" fill="#0000FF"/>
-<path d="M1 8V4.5M1 4.5V1H8V4.5H1Z" stroke="#48488C"/>
+<svg width="7" height="8" style="scale: 0.6" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 1H1V5H6L4.5 3L6 1Z" fill="#6C84FF"/>
+<path d="M1 8V5M1 5V1H6L4.5 3L6 5H1Z" stroke="#002BFF"/>
 </svg>

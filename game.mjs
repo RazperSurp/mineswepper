@@ -89,6 +89,9 @@ export default class Game {
         if (this.GAME_STATUS_CONTAINER.classList.contains('win')) this.GAME_STATUS_CONTAINER.classList.remove('win');
         if (this.GAME_STATUS_CONTAINER.classList.contains('lose')) this.GAME_STATUS_CONTAINER.classList.remove('lose');
 
+        if (this.GAME_FIELD.classList.contains('win')) this.GAME_FIELD.classList.remove('win');
+        if (this.GAME_FIELD.classList.contains('lose')) this.GAME_FIELD.classList.remove('lose');
+
         if (this.GAME_FIELD.classList.contains('end')) this.GAME_FIELD.classList.remove('end');
         
         this.GAME_STATUS_CONTAINER.innerHTML = '';
@@ -154,9 +157,7 @@ export default class Game {
     }
 
     findCell(x, y, filterOpened = false) {
-        console.log(x,y, `tr[data-addr="${Number(y)}"] td[data-addr="${Number(x)}"]${filterOpened ? ':not(.opened)' :''}`);
         const CELL = document.querySelector(`tr[data-addr="${Number(y)}"] td[data-addr="${Number(x)}"]${filterOpened ? ':not(.opened)' :''}`);
-        console.log(document.querySelector(`tr[data-addr="${Number(y)}"] td`));
         return CELL;
     }
 
@@ -294,6 +295,7 @@ export default class Game {
             })
 
             this.GAME_STATUS_CONTAINER.classList.add(isWin ? 'win' : 'lose');
+            this.GAME_FIELD.classList.add(isWin ? 'win' : 'lose');
 
             if (isWin) this.GAME_STATUS_CONTAINER.innerHTML = 'Вы успешно обнаружили все мины и вскрыли все пустые клетки! Нажмите на кнопку "Случайно" или "Применить", чтобы начать заново.';
             else this.GAME_STATUS_CONTAINER.innerHTML = 'Вы проиграли! Нажмите на кнопку "Случайно" или "Применить", чтобы начать заново.';

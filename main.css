@@ -16,10 +16,25 @@ table#game-field {
     margin: auto;
     position: relative;
     transition: .15s;
+    width: fit-content;
+    overflow: auto;
+    border-radius: 5px;
 }
 
 table#game-field.end {
     animation: shake .25s linear;
+}
+
+table#game-field.win {
+    animation: glowTableWin .5s linear;
+    box-shadow: 0 0 20px 5px #225222;
+    background-color: #2252224d;
+}
+
+table#game-field.lose {
+    animation: glowTableLose .5s linear;
+    box-shadow: 0 0 20px 5px #ff0000;
+    background-color: #ff00004d;
 }
 
 #game-status {
@@ -28,19 +43,21 @@ table#game-field.end {
 
 #game-status.lose {
     animation: glowLose .65s linear;
+    text-shadow: 0 0 2px #ff0000;
 }
 
 #game-status.win {
     animation: glowWin .65s linear;
+    text-shadow: 0 0 2px #225222;
 }
 
 @keyframes glowWin {
     0% {
         text-shadow: 0 0 #225222;
     } 50% {
-        text-shadow: 0 0 2px #225222;
+        text-shadow: 0 0 4px #225222;
     } 100% {
-        text-shadow: 0 0 #225222;
+        text-shadow: 0 0 2px #225222;
     }
 }
 
@@ -48,9 +65,33 @@ table#game-field.end {
     0% {
         text-shadow: 0 0 #ff0000;
     } 50% {
-        text-shadow: 0 0 5px #ff0000;
+        text-shadow: 0 0 4px #ff0000;
     } 100% {
-        text-shadow: 0 0 #ff0000;
+        text-shadow: 0 0 2px #ff0000;
+    }
+}
+
+@keyframes glowTableWin {
+    0% {
+        box-shadow: 0 0 0 0 #225222;
+    } 50% {
+        box-shadow: 0 0 20px 4px #225222;
+    } 75% {
+        box-shadow: 0 0 10px 4px #225222;
+    } 100% {
+        box-shadow: 0 0 20px 4px #225222;
+    }
+}
+
+@keyframes glowTableLose {
+    0% {
+        box-shadow: 0 0 0 0 #ff0000;
+    } 50% {
+        box-shadow: 0 0 20px 4px #ff0000;
+    } 75% {
+        box-shadow: 0 0 10px 4px #ff0000;
+    } 100% {
+        box-shadow: 0 0 20px 4px #ff0000;
     }
 }
 
@@ -79,6 +120,8 @@ table#game-field td {
     background-color: #c3a188;
     width: 40px;
     height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     cursor: pointer;
     transition: .15s;
     text-align: center;
@@ -154,6 +197,12 @@ td.flag {
     background-size: cover;
     background-image: url('./assets/flag.svg');
     background-color: #48488C;
+}
+
+#game-field.win td.mine {
+    background-image: url('./assets/mine-green.svg');
+    background-color: #00c6438d !important;
+    box-shadow: 0 0 1px 1px #2252224d !important;
 }
 
 td.flag.mine {

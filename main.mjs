@@ -32,8 +32,6 @@ SETTINGS_FORM.addEventListener('reset', e => {
         mines: Math.floor(_WIDTH * _HEIGHT * _MINES_PERCENT)
     }
 
-    // console.log([GENERATION.width * GENERATION.height, MINES_PERCENT])
-
     SETTINGS_FORM.querySelector('input[name="width"]').value = GENERATION.width;
     SETTINGS_FORM.querySelector('input[name="height"]').value = GENERATION.height;
     SETTINGS_FORM.querySelector('input[name="mines"]').value = GENERATION.mines;
@@ -53,8 +51,6 @@ SETTINGS_FORM.addEventListener('submit', e => {
     const FD = new FormData(e.currentTarget);
 
     window._game = new Game(FD.get('width'), FD.get('height'), FD.get('mines'), (new URLSearchParams(window.location.search)).has('debug'));
-
-    console.log(window._game);
 
     return false;
 })

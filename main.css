@@ -91,3 +91,19 @@ td.flag {
     background-image: url('./assets/flag.svg');
     background-color: #48488C;
 }
+
+td.flag.mine {
+    background-image: url('./assets/flag-green.svg');
+}
+
+#game-status {
+    text-align: center;
+}
+
+#game-status.win {
+    color: #008000
+}
+
+#game-status.lose {
+    color: #F00000
+}

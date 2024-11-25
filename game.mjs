@@ -1,4 +1,6 @@
 export default class Game {
+    _SHOW_MINES = false;
+
     _WIDTH;
     _HEIGHT;
     _SQUARE;
@@ -14,13 +16,18 @@ export default class Game {
     _CLOSED_CELLS_LEFT;
     _UNSIGNED_MINES_LEFT;
 
+    GAME_STATUS_CONTAINER = document.getElementById('game-status');
     STOPWATCH_CONTAINER = document.getElementById('stopwatch');
     CLOSED_CELLS_LEFT_CONTAINER = document.getElementById('closed-cells-left');
     UNSIGNED_MINES_LEFT_CONTAINER = document.getElementById('unsigned-mines-left');
 
     GAME_FIELD = document.getElementById('game-field');
 
-    constructor (width, height, minesCount) {
+    constructor (width, height, minesCount, isDebug = false) {
+        this._SHOW_MINES = isDebug;
+
+        this._resetGameField();
+
         this._WIDTH = Number(width);
         this._HEIGHT = Number(height);
         this._MINES_COUNT = Number(minesCount);
@@ -34,6 +41,10 @@ export default class Game {
         this.updateGameInfo();
 
         this.triggerStopwatch();
+
+        if (this._SHOW_MINES) setTimeout(() => {
+            this.markCell({ POS: {X: 0, Y: 0}, EL: this.findCell(0,0) });
+        }, 100);
     }
 
     triggerStopwatch(doStop = false) {
@@ -74,9 +85,23 @@ export default class Game {
         return this._parseStopwatch();
     }
 
-    renderField() {
-        if (this.GAME_FIELD.classList.contains('end')) this.GAME_FIELD.classList.remove('end');
+    _resetGameField() {
+        if (this.GAME_STATUS_CONTAINER.classList.contains('win')) this.GAME_STATUS_CONTAINER.classList.remove('win');
+        if (this.GAME_STATUS_CONTAINER.classList.contains('lose')) this.GAME_STATUS_CONTAINER.classList.remove('lose');
 
+        if (this.GAME_FIELD.classList.contains('end')) this.GAME_FIELD.classList.remove('end');
+        
+        this.GAME_STATUS_CONTAINER.innerHTML = '';
+
+        this.GAME_FIELD.oncontextmenu = e => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            return false;
+        }
+    }
+
+    renderField() {
         for (let i = 0; i < this._HEIGHT; i++) {
             let row = document.createElement('tr');
             row.setAttribute('data-addr', i);
@@ -87,11 +112,7 @@ export default class Game {
                     let cell = document.createElement('td');
                     cell.setAttribute('data-addr', j);
                     
-                    cell.onclick = (ce) => {
-                        if (!ce.currentTarget.classList.contains('opened')) {
-                            this.openCell(ce.currentTarget);
-                        }
-                    };
+                    cell.onclick = (ce) => { this.openCell(ce.currentTarget) };
 
                     cell.oncontextmenu = (ce) => {
                         ce.preventDefault();
@@ -132,6 +153,13 @@ export default class Game {
         }
     }
 
+    findCell(x, y, filterOpened = false) {
+        console.log(x,y, `tr[data-addr="${Number(y)}"] td[data-addr="${Number(x)}"]${filterOpened ? ':not(.opened)' :''}`);
+        const CELL = document.querySelector(`tr[data-addr="${Number(y)}"] td[data-addr="${Number(x)}"]${filterOpened ? ':not(.opened)' :''}`);
+        console.log(document.querySelector(`tr[data-addr="${Number(y)}"] td`));
+        return CELL;
+    }
+
     markCell(cell, doRemove = false) {
         this._SIGNED_POS = this._SIGNED_POS ?? [];
         if (!cell.EL.classList.contains('opened')) {
@@ -147,9 +175,7 @@ export default class Game {
                 cell.EL.classList.remove('flag');
 
                 cell.EL.onclick = (ce) => {
-                    if (!ce.currentTarget.classList.contains('opened')) {
-                        this.openCell(ce.currentTarget);
-                    }
+                    this.openCell(ce.currentTarget);
                 }
 
                 delete this._SIGNED_POS[this._SIGNED_POS.find(pos => pos.x == cell.POS.X && pos.y == cell.POS.Y)];
@@ -157,10 +183,15 @@ export default class Game {
 
             this.updateGameInfo();
         }
+
+        if (this._SHOW_MINES) {
+            this._SHOW_MINES = false;
+            this._MINES_POS.forEach(pos => { this.findCell(pos.x, pos.y).classList.add('mine') })
+        }
     }
 
     openCell(cell) {
-        if (!cell.classList.contains('opened')) {
+        if (!cell.classList.contains('flag')) {
             const CELL_DATA = {
                 POS: {
                     X: cell.dataset.addr,
@@ -168,29 +199,41 @@ export default class Game {
                 }, EL: cell
             }
 
-            const IS_MINE = this.checkIsMine(CELL_DATA);
+            const NEIGHBORS = this.getNeighbors(CELL_DATA);
 
-            CELL_DATA.EL.classList.add('opened');
+            if (!cell.classList.contains('opened')) {
+                const IS_MINE = this.checkIsMine(CELL_DATA);
 
-            if (IS_MINE) {
-                CELL_DATA.EL.classList.add('mine');
-                this.endGame();
+                CELL_DATA.EL.classList.add('opened');
+
+                if (IS_MINE) {
+                    CELL_DATA.EL.classList.add('mine');
+                    this.endGame();
+                } else {
+                    this._CLOSED_CELLS_LEFT--;
+                    let minesCount = this.checkNeighbors(CELL_DATA);
+
+                    if (minesCount > 0) CELL_DATA.EL.innerHTML = minesCount;
+                    else NEIGHBORS.forEach(neighbor => {
+                        this.openCell(neighbor.EL)
+                    });
+
+                    CELL_DATA.EL.setAttribute('data-value', minesCount);
+
+                    if (this._CLOSED_CELLS_LEFT === 0) this.endGame(true);
+                }
+
+                this.updateGameInfo();
+                return true;
             } else {
-                this._CLOSED_CELLS_LEFT--;
-                let minesCount = this.checkNeighbors(CELL_DATA);
+                let signedMinesCount = 0;
+                const MINES_COUNT = CELL_DATA.EL.dataset.value;
 
-                if (minesCount > 0) CELL_DATA.EL.innerHTML = minesCount;
-                else this.getNeighbors(CELL_DATA).forEach(neighbor => {
-                    console.log(neighbor);
-                    this.openCell(neighbor.EL)
-                });
+                NEIGHBORS.forEach(neighbor => { if (neighbor.EL.classList.contains('flag')) signedMinesCount++ });
 
-                if (this._CLOSED_CELLS_LEFT === 0) this.endGame(true);
-            }
-
-            this.updateGameInfo();
-            return true;
-        } else return false;
+                if (MINES_COUNT <= signedMinesCount) NEIGHBORS.forEach(neighbor => { this.openCell(neighbor.EL) });
+            };
+        }
     }
 
     getNeighbors(cell) {
@@ -203,7 +246,7 @@ export default class Game {
                         Y: Number(cell.POS.Y) + i,
                         X: Number(cell.POS.X) + j
                     },
-                    EL: document.querySelector(`tr[data-addr="${Number(cell.POS.Y) + i}"] td[data-addr="${Number(cell.POS.X) + j}"]:not(.opened)`)
+                    EL: this.findCell(Number(cell.POS.X) + j, Number(cell.POS.Y) + i, true)
                 }
 
                 if (neighbor.EL !== null) neighbors.push(neighbor);
@@ -243,12 +286,13 @@ export default class Game {
 
         if (!isRestart) {
             this._MINES_POS.forEach(pos => {
-                document.querySelector(`tr[data-addr="${Number(pos.y)}"] td[data-addr="${Number(pos.x)}"]`).classList.add('mine');
+                this.findCell(pos.x, pos.y).classList.add('mine');
             })
 
+            this.GAME_STATUS_CONTAINER.classList.add(isWin ? 'win' : 'lose');
 
-            if (isWin) alert('Вы успешно обнаружили все мины и вскрыли все пустые клетки! Нажмите на кнопку "Случайно" или "Применить", чтобы начать заново.')
-            else alert('Вы проиграли! Нажмите на кнопку "Случайно" или "Применить", чтобы начать заново.');
+            if (isWin) this.GAME_STATUS_CONTAINER.innerHTML = 'Вы успешно обнаружили все мины и вскрыли все пустые клетки! Нажмите на кнопку "Случайно" или "Применить", чтобы начать заново.';
+            else this.GAME_STATUS_CONTAINER.innerHTML = 'Вы проиграли! Нажмите на кнопку "Случайно" или "Применить", чтобы начать заново.';
         }
     }
 }

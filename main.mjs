@@ -52,7 +52,7 @@ SETTINGS_FORM.addEventListener('submit', e => {
 
     const FD = new FormData(e.currentTarget);
 
-    window._game = new Game(FD.get('width'), FD.get('height'), FD.get('mines'));
+    window._game = new Game(FD.get('width'), FD.get('height'), FD.get('mines'), (new URLSearchParams(window.location.search)).has('debug'));
 
     console.log(window._game);
 

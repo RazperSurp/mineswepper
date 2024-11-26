@@ -203,29 +203,44 @@ form#settings {
     font-weight: 100;
 }
 
-td.mine {
-    background-position: center;
-    background-size: cover;
-    background-image: url('./assets/mine.svg');
-    background-color: #ef585875 !important;
-    box-shadow: 0 0 1px 1px #ef5858;
-}
-
 td.mine.faggot {
     animation: blow .4s linear/*cubic-bezier(0.43, 0.08, 0.4, 0.99);*/
-}
-
-td.flag {
-    background-position: center;
-    background-size: cover;
-    background-image: url('./assets/flag.svg');
-    background-color: #48488C;
 }
 
 #game-field.win td.mine {
     background-image: url('./assets/mine-green.svg');
     background-color: #00c6438d !important;
     box-shadow: 0 0 1px 1px #2252224d !important;
+}
+
+
+td.flag {
+    background-image: url('./assets/flag.svg');
+    background-color: #48488C;
+}
+
+td.mine {
+    background-image: url('./assets/mine.svg');
+    background-color: #ef585875 !important;
+    box-shadow: 0 0 1px 1px #ef5858;
+}
+
+td.mine,
+td.flag {
+    background-position: 0px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: 0px;
+    animation: appear .15s linear;
+}
+
+@keyframes appear {
+    0% {
+        background-position-y: -40px;
+    }
+    100% {
+        background-position-y: 0px;
+    }
 }
 
 td.flag.mine {

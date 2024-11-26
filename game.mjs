@@ -1,4 +1,5 @@
 export default class Game {
+    _CLICKS = 0;
     _SHOW_MINES = false;
 
     _WIDTH;
@@ -33,14 +34,10 @@ export default class Game {
         this._MINES_COUNT = Number(minesCount);
 
         this.renderField();
-        this.generateMines();
 
         this._CLOSED_CELLS_LEFT = this._SQUARE - this._MINES_COUNT;
         this._UNSIGNED_MINES_LEFT = this._MINES_COUNT;
 
-        this.updateGameInfo();
-
-        this.triggerStopwatch();
     }
 
     triggerStopwatch(doStop = false) {
@@ -137,7 +134,7 @@ export default class Game {
         }
     }
 
-    generateMines() {
+    generateMines(cell = null) {
         this._SQUARE = this._WIDTH * this._HEIGHT;
 
         let CELL_INDEX, CELL_POS_Y, CELL_POS_X;
@@ -155,6 +152,16 @@ export default class Game {
             } while (!!this._MINES_POS.find(pos => (pos.x == CELL_POS_X && pos.y == CELL_POS_Y)));
             
             this._MINES_POS.push({ x: CELL_POS_X, y: CELL_POS_Y });
+        }
+        
+        if (cell != null) {
+            if (this.checkNeighbors(cell) > 0) {
+                this._MINES_POS = [];
+                this.generateMines(cell);
+            } else {
+                this.updateGameInfo();
+                this.triggerStopwatch();
+            }
         }
     }
 
@@ -189,13 +196,17 @@ export default class Game {
     }
 
     openCell(cell) {
+        const CELL_DATA = {
+            POS: {
+                X: cell.dataset.addr,
+                Y: cell.parentNode.dataset.addr
+            }, EL: cell
+        }
+
+        if (this._CLICKS === 0) this.generateMines(CELL_DATA);
+
         if (!cell.classList.contains('flag')) {
-            const CELL_DATA = {
-                POS: {
-                    X: cell.dataset.addr,
-                    Y: cell.parentNode.dataset.addr
-                }, EL: cell
-            }
+            this._CLICKS++;
 
             const NEIGHBORS = this.getNeighbors(CELL_DATA);
 

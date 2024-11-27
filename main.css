@@ -163,9 +163,10 @@ table#game-field td.opened {
     box-shadow: 0 0 1px 1px #c3a18a42;
 }
 
+/* keyframe has higher priority than this scale+transition. i will add animation for scaling opened mine later. maybe?
 table#game-field td.opened.mine {
     scale: 1.5;
-}
+} */
 
 form#settings {
     display: flex;

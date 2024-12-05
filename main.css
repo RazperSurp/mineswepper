@@ -152,6 +152,20 @@ table#game-field td {
     user-select: none; /* Standard syntax */
 }
 
+table#game-field td span {
+    animation: popup: .15s;
+}
+
+@keyframe popup {
+    0% {
+        scale: 1.0;
+    } 50% {
+        scale: 1.1;
+    } 100% {
+        scale: 1.0
+    }
+}
+
 table#game-field td:hover,
 table#game-field td.hover {
     background-color: #edb3a1;

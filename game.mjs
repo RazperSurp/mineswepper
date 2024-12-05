@@ -224,7 +224,7 @@ export default class Game {
                     this._CLOSED_CELLS_LEFT--;
                     let minesCount = this.checkNeighbors(CELL_DATA);
 
-                    if (minesCount > 0) CELL_DATA.EL.innerHTML = minesCount;
+                    if (minesCount > 0) CELL_DATA.EL.innerHTML = `<span>minesCount</span>`;
                     else NEIGHBORS.forEach(neighbor => {
                         this.openCell(neighbor.EL)
                     });

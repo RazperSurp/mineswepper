@@ -242,7 +242,7 @@ export default class Game {
 
                 NEIGHBORS.forEach(neighbor => { if (neighbor.EL.classList.contains('flag')) signedMinesCount++ });
 
-                if (MINES_COUNT <= signedMinesCount) NEIGHBORS.forEach(neighbor => { this.openCell(neighbor.EL) });
+                if (MINES_COUNT <= signedMinesCount) NEIGHBORS.forEach(neighbor => { setTimeout(() => { this.openCell(neighbor.EL) }, 500) });
                 else {
                     NEIGHBORS.forEach(neighbor => { neighbor.EL.classList.add('hover') });
                     setTimeout(() => { NEIGHBORS.forEach(neighbor => { neighbor.EL.classList.remove('hover') }) }, 200);
